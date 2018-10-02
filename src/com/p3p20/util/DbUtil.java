@@ -22,7 +22,7 @@ package com.p3p20.util;
 	                String driver = prop.getProperty("driver");
 	                String url = prop.getProperty("url");
 	                String user = prop.getProperty("root");
-	                String password = prop.getProperty("rootpwd");
+	                String password = prop.getProperty("Password29");
 	                Class.forName(driver);
 	                connection = DriverManager.getConnection(url, user, password);
 	            } catch (ClassNotFoundException e) {

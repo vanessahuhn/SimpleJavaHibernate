@@ -9,25 +9,31 @@ import org.hibernate.Transaction;
  
 import com.p3p20.model.User;
 import com.p3p20.util.HibernateUtil;
- 
+
+//DAO = Data Access Object
+
 public class UserDao {
  
 /* Methode pour ajouter un utilisateur */   
  public void addUser(User user) {
-        Transaction trns = null;
+        //unit of work : une ou plusieurs queries, c'est mieux de faire une requête = une transaction
+	 	Transaction trns = null;
+        //une session est une connexion à la bdd
+	 	//on ouvre une connexion avec la bdd
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
+        	//début de la transaction pour cette session
             trns = session.beginTransaction();
+            //prépare dans la mémoire une query de type insert
             session.save(user);
+            //met à jour les données dans la bdd et exécute les query souvegardées via le .save
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             if (trns != null) {
+            	//si on exception est levée, on annule les changements faits à la bdd
                 trns.rollback();
             }
             e.printStackTrace();
-        } finally {
-            session.flush();
-            session.close();
         }
     }
 /* Méthode pour supprimer un utilisateur */
@@ -36,6 +42,7 @@ public class UserDao {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = session.beginTransaction();
+            //permet de récupérer un objet depuis la base de données, il faut le caster en user
             User user = (User) session.load(User.class, new Integer(userid));
             session.delete(user);
             session.getTransaction().commit();
@@ -44,10 +51,7 @@ public class UserDao {
                 trns.rollback();
             }
             e.printStackTrace();
-        } finally {
-            session.flush();
-            session.close();
-        }
+        } 
     }
 /* Methode pour faire un update sur l’ utilisateur */
     public void updateUser(User user) {
@@ -62,9 +66,6 @@ public class UserDao {
                 trns.rollback();
             }
             e.printStackTrace();
-        } finally {
-            session.flush();
-            session.close();
         }
     }
  
@@ -78,9 +79,6 @@ public class UserDao {
             users = session.createQuery("from User").list();
         } catch (RuntimeException e) {
             e.printStackTrace();
-        } finally {
-            session.flush();
-            session.close();
         }
         return users;
     }
@@ -98,9 +96,6 @@ public class UserDao {
             user = (User) query.uniqueResult();
         } catch (RuntimeException e) {
             e.printStackTrace();
-        } finally {
-            session.flush();
-            session.close();
         }
         return user;
     }

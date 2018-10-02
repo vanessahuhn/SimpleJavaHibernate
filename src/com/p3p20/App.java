@@ -1,9 +1,10 @@
 package com.p3p20;
+
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
- 
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
  
@@ -13,7 +14,8 @@ import com.p3p20.util.HibernateUtil;
  
 public class App {
 	
-	public static void addNewUser (UserDao dao, User user, String firstName, String lastName, String year, String month,String date,  String email) {
+	
+	public static void addNewUser (UserDao dao, User user, String firstName, String lastName, String year, String month, String date,  String email) {
 		
 		 // Add new user
         user = new User();
@@ -31,6 +33,7 @@ public class App {
         System.out.println("User is added successfully into DB");
 	}
  
+	
     public static void main(String[] args) {
     	SessionFactory sf = HibernateUtil.getSessionFactory();
     	Session session = sf.openSession();
@@ -85,3 +88,4 @@ public class App {
     }
  
 }
+
